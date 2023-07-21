@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+
+.outercontainer {
+    background-image: url('../assets/background.jpg');
+    background-size: cover;
+    background-position: bottom;
+
+    transition: .4s;
+
+    > .innercontainer {
+        min-height: 100vh;
+        padding: 30px;
+
+        backdrop-filter: blur(2px);
+        background: rgba(0, 0, 0, .25);
+
+        > .errortext_outercontainer {
+            display: flex;
+            justify-content: center;
+
+            > .errortext_innercontainer {
+                padding: 8.5px;
+                padding-left: 20px;
+                padding-right: 20px;
+
+                text-align: center;
+
+                border: .3vh solid red;
+                border-radius: .5vh;
+                background-color: rgba(255, 0, 0, 0.349);
+
+                > .errortext {
+                    color: white;
+
+                    font-family: Arial, sans-serif;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        > .searchbox_container {
+            margin-top: 30px;
+            text-align: center;
+
+            > .searchbox {
+                &:hover {
+                    border: .3vh solid rgb(39, 39, 39);
+                }
+
+                &:focus {
+                    border: .3vh solid rgb(99, 139, 99);
+                }
+
+                width: 100%;
+                padding: 10px;
+
+                color: white;
+                outline: none;
+                transition: .15s;
+
+                border: .3vh solid rgb(0, 0, 0);
+                border-radius: 1vh;
+                background: rgba(0, 0, 0, 0.589);
+            }
+        }
+
+        > .citydetails_container {
+            margin-top: 40px;
+
+            font-family: 'Comfortaa', cursive;
+            text-align: center;
+
+            > .cityname_container {
+                > .cityname {
+                    color: white;
+                    text-shadow: .15vh .15vh .15vh black;
+                }
+            }
+
+            > .citydate_container {
+                margin-top: 18px;
+
+                > .citydate {
+                    font-style: italic;
+                    font-weight: 900;
+
+                    color: rgb(182, 182, 182);
+                    text-shadow: .1vh .1vh .1vh black;
+                }
+            }
+
+            > .weathericon_container {
+                margin-top: 10px;
+
+                > .weathericon {
+                    width: 150px;
+                    height: 150px;
+                }
+            }
+
+            > .weathertype_container {
+                > .weathertype {
+                    color: white;
+                    text-shadow: 1vh 1vh 1vh black;
+                }
+            }
+        }
+
+        > .climatedetails_container {
+            margin-top: 30px;
+
+            display: flex;
+            justify-content: center;
+
+            > .climatedetails {
+                width: 500px;
+
+                text-align: center;
+                color: white;
+                font-family: 'Comfortaa', cursive;
+
+                border-radius: .85vh;
+                border: .1vh solid white;
+
+                > tr {
+                    > td {
+                        &:last-child {
+                            border-right: none;
+                        }
+                        
+                        padding: 6px;
+                        border-right: .1vh solid white;
+                    }
+                }
+            }
+        }
+    }
+}
