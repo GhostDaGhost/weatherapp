@@ -1,5 +1,6 @@
 <script lang="ts">
     import axios from "axios";
+    import Credits from './Credits.vue';
 
     export default {
         name: 'Weather',
@@ -7,21 +8,37 @@
             return {
                 currentClimate: {} as any,
                 currentTime: '',
+                currentFahrenheitTemperature: '',
+                currentFahrenheitFeelsLike: '',
+                currentWindInMPH: '',
+                currentWindInCompassPoint: '',
+                currentPressureInHg: '',
                 weatherIcon: '10d@2x.png',
                 weatherIconURL: 'https://openweathermap.org/img/wn/',
                 searchQuery: '',
                 showError: false,
                 days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                compassPoints: ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"],
                 errorText: 'Unknown Error',
                 apiKey: '0dfa2691b0e082a2f2aa34390b28f499',
                 apiEndpoint: 'https://api.openweathermap.org/data/2.5/'
             }
         },
+        components: {
+            Credits
+        },
         methods: {
             refreshWithNewClimateData (newClimateData: any): void {
                 this.currentClimate = newClimateData;
-                this.weatherIcon = newClimateData['weather'][0]['icon'] + '@2x.png';
-                this.currentTime = this.formatTimestamp(newClimateData['timezone']);
+                this.weatherIcon = newClimateData.weather[0].icon + '@2x.png';
+
+                this.currentTime = this.formatTimestamp(newClimateData.timezone);
+                this.currentFahrenheitTemperature = this.getTemperatureInFahrenheit(newClimateData.main.temp);
+                this.currentFahrenheitFeelsLike = this.getTemperatureInFahrenheit(newClimateData.main.feels_like);
+
+                this.currentWindInMPH = this.getWindInMilesPerHour(newClimateData.wind.speed);
+                this.currentWindInCompassPoint = this.getWindDegreeInCompassPoint(newClimateData.wind.deg);
+                this.currentPressureInHg = this.getPressureInHg(newClimateData.main.pressure);
             },
 
             hideErrorMessage (): void {
@@ -55,6 +72,23 @@
                 const locationDate: Date = new Date((currentDate.getTime() + currentDate.getTimezoneOffset() * 60000) + (1000 * locationTimezone));
 
                 return `${this.days[locationDate.getDay()]} ${locationDate.toLocaleString()}`;
+            },
+
+            getTemperatureInFahrenheit (kelvinTemperature: number): string {
+                const fahrenheitTemperature: number = ((Math.round(kelvinTemperature) - 273.15) * 9 / 5) + 32;
+                return fahrenheitTemperature.toFixed(0);
+            },
+
+            getWindInMilesPerHour (metersPerSecond: number): string {
+                return (metersPerSecond * 2.23694).toFixed(0);
+            },
+
+            getWindDegreeInCompassPoint (windDegrees: number): string {
+                return this.compassPoints[Number((windDegrees / 22.5).toFixed(0))];
+            },
+
+            getPressureInHg (pressureInMillibar: number): string {
+                return (pressureInMillibar / 33.864).toFixed(2);
             }
         }
     }
@@ -82,8 +116,8 @@
                     <h3 class="citydate">{{ currentTime === '' ? 'Enter a city to get started!' : currentTime }}</h3>
                 </div>
 
-                <div class="weathericon_container">
-                    <img v-bind:src="weatherIconURL + weatherIcon" class="weathericon" draggable="false">
+                <div class="weathericon_container" v-if="currentClimate.weather !== undefined">
+                    <img v-bind:src="weatherIconURL + weatherIcon" alt="current weather icon" class="weathericon" draggable="false">
                 </div>
 
                 <div class="weathertype_container" v-if="currentClimate.weather !== undefined">
@@ -93,15 +127,49 @@
                 </div>
             </div>
 
-            <div class="climatedetails_container">
+            <div class="climatedetails_container" v-if="currentClimate.weather !== undefined">
                 <table class="climatedetails">
                     <tr>
-                        <td>Wind: 10 MPH</td>
-                        <td>Visibility: Low</td>
-                        <td>Pressure: N/A</td>
+                        <td>
+                            Temperature:
+                            <br>
+                            <span class="detail">{{ currentFahrenheitTemperature }}F</span>
+                        </td>
+
+                        <td>
+                            Wind:
+                            <br>
+                            <span class="detail">{{ currentWindInMPH }} MPH ({{ currentWindInCompassPoint }})</span>
+                        </td>
+
+                        <td>
+                            Pressure:
+                            <br>
+                            <span class="detail">{{ currentPressureInHg }} inHg</span>
+                        </td>
                     </tr>
                 </table>
             </div>
+
+            <div class="climatedetails_container" style="margin-top: 13.5px;" v-if="currentClimate.weather !== undefined">
+                <table class="climatedetails">
+                    <tr>
+                        <td>
+                            Humidity:
+                            <br>
+                            <span class="detail">{{ currentClimate.main.humidity }}%</span>
+                        </td>
+
+                        <td>
+                            Feels Like:
+                            <br>
+                            <span class="detail">{{ currentFahrenheitFeelsLike }}F</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <Credits />
         </main>
     </div>
 </template>

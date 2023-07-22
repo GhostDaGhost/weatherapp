@@ -1,0 +1,19 @@
+.credits_container {
+    margin-top: 45px;
+    text-align: center;
+
+    > .credits {
+        > .hyperlink {
+            &:hover {
+                color: rgb(96, 216, 216);
+            }
+    
+            color: rgb(0, 245, 245);
+            transition: .1s ease-in-out;
+        }
+
+        font-size: 18.63px;
+        font-family: 'Comfortaa', cursive;
+        color: white;
+    }
+}

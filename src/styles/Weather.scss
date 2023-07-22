@@ -119,6 +119,7 @@
                 text-align: center;
                 color: white;
                 font-family: 'Comfortaa', cursive;
+                font-size: 15px;
 
                 border-radius: .85vh;
                 border: .1vh solid white;
@@ -131,6 +132,10 @@
                         
                         padding: 6px;
                         border-right: .1vh solid white;
+
+                        > .detail {
+                            color: rgb(0, 245, 245);
+                        }
                     }
                 }
             }
