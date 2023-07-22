@@ -5,8 +5,8 @@
         name: 'Weather',
         data () {
             return {
-                currentClimate: {},
-                currentTime: null,
+                currentClimate: {} as any,
+                currentTime: '',
                 weatherIcon: '10d@2x.png',
                 weatherIconURL: 'https://openweathermap.org/img/wn/',
                 searchQuery: '',
@@ -18,7 +18,7 @@
             }
         },
         methods: {
-            refreshWithNewClimateData (newClimateData: object): void {
+            refreshWithNewClimateData (newClimateData: any): void {
                 this.currentClimate = newClimateData;
                 this.weatherIcon = newClimateData['weather'][0]['icon'] + '@2x.png';
                 this.currentTime = this.formatTimestamp(newClimateData['timezone']);
@@ -33,7 +33,7 @@
                 this.showError = true;
             },
 
-            searchCityForClimateData (event: object): void {
+            searchCityForClimateData (event: any): void {
                 if (event['key'] === 'Enter') {
                     axios.get(`${this.apiEndpoint}weather?q=${this.searchQuery}&APPID=${this.apiKey}`).then(response => {
                         console.log(response);
@@ -79,7 +79,7 @@
                 </div>
 
                 <div class="citydate_container">
-                    <h3 class="citydate">{{ currentTime ?? 'Enter a city to get started!' }}</h3>
+                    <h3 class="citydate">{{ currentTime === '' ? 'Enter a city to get started!' : currentTime }}</h3>
                 </div>
 
                 <div class="weathericon_container">
