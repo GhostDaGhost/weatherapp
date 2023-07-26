@@ -50,9 +50,15 @@
                 this.showError = true;
             },
 
-            searchCityForClimateData (event: any): void {
+            async searchCityForClimateData (event: any): void {
                 if (event['key'] === 'Enter') {
-                    axios.get(`${this.apiEndpoint}weather?q=${this.searchQuery}&APPID=${this.apiKey}`).then(response => {
+                    const spinner: HTMLElement = document.querySelector('.spinner_container');
+
+                    // SHOW LOADER
+                    spinner.style.display = 'flex';
+
+                    // GET DATA FROM OPEN WEATHER API
+                    await axios.get(`${this.apiEndpoint}weather?q=${this.searchQuery}&APPID=${this.apiKey}`).then(response => {
                         console.log(response);
 
                         // HIDE ERROR IF DISPLAYED AND REFRESH PAGE WITH NEW CLIMATE DATA
@@ -64,6 +70,9 @@
                         // SHOW ERROR ON PAGE
                         this.displayErrorMessage(error['message']);
                     });
+
+                    // HIDE LOADER
+                    spinner.style.display = 'none';
                 }
             },
 
