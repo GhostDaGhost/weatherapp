@@ -50,9 +50,9 @@
                 this.showError = true;
             },
 
-            async searchCityForClimateData (event: any): void {
+            async searchCityForClimateData (event: any): Promise<void> {
                 if (event['key'] === 'Enter') {
-                    const spinner: HTMLElement = document.querySelector('.spinner_container');
+                    const spinner: any = document.querySelector('.spinner_container');
 
                     // SHOW LOADER
                     spinner.style.display = 'flex';
